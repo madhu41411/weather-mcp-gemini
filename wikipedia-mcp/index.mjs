@@ -6,32 +6,33 @@ import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
  * A simple Wikipedia MCP server that search for articles.
  */
 
+import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+
 const server = new Server(
     { name: "wikipedia-mcp", version: "1.0.0" },
     { capabilities: { tools: {} } }
 );
 
-server.setRequestHandler(async (request) => {
-    if (request.method === "listTools") {
-        return {
-            tools: [
-                {
-                    name: "search_wikipedia",
-                    description: "Search for a summary of a Wikipedia article",
-                    inputSchema: {
-                        type: "object",
-                        properties: {
-                            query: { type: "string", description: "The topic to search for" }
-                        },
-                        required: ["query"]
-                    }
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+    return {
+        tools: [
+            {
+                name: "search_wikipedia",
+                description: "Search for a summary of a Wikipedia article",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        query: { type: "string", description: "The topic to search for" }
+                    },
+                    required: ["query"]
                 }
-            ]
-        };
-    }
+            }
+        ]
+    };
+});
 
-    if (request.method === "callTool") {
-        const { name, arguments: args } = request.params;
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name, arguments: args } = request.params;
 
         if (name === "search_wikipedia") {
             const query = args.query;
@@ -49,10 +50,9 @@ server.setRequestHandler(async (request) => {
                 };
             }
         }
-    }
 
-    throw new Error("Method not found");
-});
+        throw new Error("Method not found");
+    });
 
 let transport = null;
 

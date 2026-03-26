@@ -2,55 +2,55 @@ import http from "http";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
+import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+
 const server = new Server(
     { name: "mock-weather-server", version: "1.0.0" },
     { capabilities: { tools: {} } }
 );
 
-server.setRequestHandler(async (request) => {
-    if (request.method === "listTools") {
-        return {
-            tools: [
-                {
-                    name: "get-forecast",
-                    description: "Get a weather forecast for a location",
-                    inputSchema: {
-                        type: "object",
-                        properties: {
-                            location: { type: "string" }
-                        },
-                        required: ["location"]
-                    }
-                },
-                {
-                    name: "get-alerts",
-                    description: "Get active weather alerts for a location",
-                    inputSchema: {
-                        type: "object",
-                        properties: {
-                            location: { type: "string" }
-                        },
-                        required: ["location"]
-                    }
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+    return {
+        tools: [
+            {
+                name: "get-forecast",
+                description: "Get a weather forecast for a location",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        location: { type: "string" }
+                    },
+                    required: ["location"]
                 }
-            ]
+            },
+            {
+                name: "get-alerts",
+                description: "Get active weather alerts for a location",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        location: { type: "string" }
+                    },
+                    required: ["location"]
+                }
+            }
+        ]
+    };
+});
+
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name, arguments: args } = request.params;
+    const location = args.location || "unknown";
+
+    if (name === "get-forecast") {
+        return {
+            content: [{ type: "text", text: `The forecast for ${location} is 72°F and Sunny.` }]
         };
     }
-
-    if (request.method === "callTool") {
-        const { name, arguments: args } = request.params;
-        const location = args.location || "unknown";
-
-        if (name === "get-forecast") {
-            return {
-                content: [{ type: "text", text: `The forecast for ${location} is 72°F and Sunny.` }]
-            };
-        }
-        if (name === "get-alerts") {
-            return {
-                content: [{ type: "text", text: `No active alerts for ${location}.` }]
-            };
-        }
+    if (name === "get-alerts") {
+        return {
+            content: [{ type: "text", text: `No active alerts for ${location}.` }]
+        };
     }
 
     throw new Error("Method not found");

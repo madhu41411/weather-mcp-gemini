@@ -15,5 +15,5 @@ applications:
       - nodejs_buildpack
     command: npm start
     env:
-      GEMINI_API_KEY: "REPLACE_WITH_YOUR_KEY"
-      MCP_SERVER_URL: "https://wikipedia-mcp.api.cf.us10-001.hana.ondemand.com/sse" # Example, I'll advise user to fix this
+      GEMINI_API_KEY: "AIzaSyCYUdFxEVmC-ARMkAOwl43pKXMJpTIJWkM"
+      MCP_SERVER_URL: "https://wikipedia-mcp.cfapps.us10-001.hana.ondemand.com/sse"
