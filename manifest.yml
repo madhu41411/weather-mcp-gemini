@@ -1,11 +1,19 @@
 applications:
-  - name: weather-mcp-cli
+  - name: wikipedia-mcp
+    path: ./wikipedia-mcp
     memory: 128M
     disk_quota: 256M
     buildpacks:
       - nodejs_buildpack
-    no-route: true
-    health-check-type: process
-    command: node index.mjs "New York"
+    command: node index.mjs
+
+  - name: cap-ai-app
+    path: ./cap-app
+    memory: 256M
+    disk_quota: 512M
+    buildpacks:
+      - nodejs_buildpack
+    command: npm start
     env:
       GEMINI_API_KEY: "REPLACE_WITH_YOUR_KEY"
+      MCP_SERVER_URL: "https://wikipedia-mcp.api.cf.us10-001.hana.ondemand.com/sse" # Example, I'll advise user to fix this
