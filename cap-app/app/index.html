@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTP AI Assistant</title>
+    <!-- Modern Web Aesthetics -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-container">
+        <header>
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12V22L22 17V7L12 2Z" fill="url(#paint0_linear)"/>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#4F46E5"/>
+                            <stop offset="1" stop-color="#7C3AED"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>AI Assistant</h1>
+            </div>
+            <p>Powered by SAP CAP, BTP, and Gemini 2.5 Flash</p>
+        </header>
+
+        <main>
+            <div class="search-box">
+                <input type="text" id="topicInput" placeholder="Ask about a topic (e.g., Cloud computing)..." autocomplete="off">
+                <button id="searchButton">
+                    <span class="btn-text">Search</span>
+                    <span class="loader hidden"></span>
+                </button>
+            </div>
+            
+            <div id="resultContainer" class="result-container hidden">
+                <div class="result-header">
+                    <h2>Result</h2>
+                    <span class="badge">Wikipedia Source</span>
+                </div>
+                <div id="resultContent" class="result-content"></div>
+            </div>
+            
+            <div id="errorContainer" class="error-container hidden">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div id="errorText"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
