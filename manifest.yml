@@ -1,0 +1,11 @@
+applications:
+  - name: weather-mcp-cli
+    memory: 128M
+    disk_quota: 256M
+    buildpacks:
+      - nodejs_buildpack
+    no-route: true
+    health-check-type: process
+    command: node index.mjs "New York"
+    env:
+      GEMINI_API_KEY: "REPLACE_WITH_YOUR_KEY"
