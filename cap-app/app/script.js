@@ -85,5 +85,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Modal logic
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const cancelSettings = document.getElementById('cancelSettings');
+    const saveSettings = document.getElementById('saveSettings');
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    const modalError = document.getElementById('modalError');
+    const modalSuccess = document.getElementById('modalSuccess');
+
+    settingsBtn.addEventListener('click', () => {
+        settingsModal.classList.remove('hidden');
+        modalError.classList.add('hidden');
+        modalSuccess.classList.add('hidden');
+        apiKeyInput.value = '';
+        setTimeout(() => apiKeyInput.focus(), 100);
+    });
+
+    const closeModal = () => {
+        settingsModal.classList.add('hidden');
+    };
+
+    cancelSettings.addEventListener('click', closeModal);
+
+    settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) closeModal();
+    });
+
+    saveSettings.addEventListener('click', async () => {
+        const newKey = apiKeyInput.value.trim();
+        if (!newKey) {
+            modalError.textContent = "API Key cannot be empty.";
+            modalError.classList.remove('hidden');
+            modalSuccess.classList.add('hidden');
+            return;
+        }
+
+        modalError.classList.add('hidden');
+        modalSuccess.classList.add('hidden');
+        saveSettings.disabled = true;
+        saveSettings.textContent = 'Saving...';
+
+        try {
+            const response = await fetch('/odata/v4/aiassist/updateApiKey', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key: newKey })
+            });
+
+            if (!response.ok) throw new Error("Failed to update API Key on backend.");
+
+            modalSuccess.textContent = "API Key successfully updated!";
+            modalSuccess.classList.remove('hidden');
+            
+            setTimeout(() => {
+                closeModal();
+                input.focus();
+            }, 1500);
+
+        } catch (err) {
+            modalError.textContent = err.message || "An error occurred.";
+            modalError.classList.remove('hidden');
+        } finally {
+            saveSettings.disabled = false;
+            saveSettings.textContent = 'Save Key';
+        }
+    });
+
     input.focus();
 });

@@ -47,6 +47,31 @@ body {
 header {
     text-align: center;
     margin-bottom: 40px;
+    position: relative;
+}
+
+.icon-button {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: unset;
+}
+
+.icon-button:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(30deg);
+    box-shadow: none;
 }
 
 .logo {
@@ -208,4 +233,88 @@ button:disabled {
     flex: 1;
     line-height: 1.5;
     font-size: 14px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 32px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: slideDown 0.3s ease-out;
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.modal-content p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    font-family: monospace;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    transform: none;
+}
+
+.modal-error {
+    color: var(--error-text);
+    background: var(--error-bg);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.modal-success {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
 }

@@ -5,16 +5,24 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default class AIAssistService extends cds.ApplicationService {
     async init() {
-        const apiKey = process.env.GEMINI_API_KEY;
+        let currentApiKey = process.env.GEMINI_API_KEY;
         const mcpUrl = process.env.MCP_SERVER_URL || "http://localhost:8080/sse";
 
-        if (!apiKey) {
+        if (!currentApiKey) {
             console.error("GEMINI_API_KEY is missing");
         }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
+        this.on('updateApiKey', async (req) => {
+            const { key } = req.data;
+            if (!key) return false;
+            currentApiKey = key;
+            console.log("API key updated dynamically.");
+            return true;
+        });
 
         this.on('askAI', async (req) => {
+            if (!currentApiKey) return "Error: API Key is not set or invalid.";
+            const genAI = new GoogleGenerativeAI(currentApiKey);
             const { topic } = req.data;
             console.log(`AI query for topic: ${topic}`);
 
