@@ -18,6 +18,7 @@ export default class AIAssistService extends cds.ApplicationService {
             const { topic } = req.data;
             console.log(`AI query for topic: ${topic}`);
 
+            console.log(`Connecting to MCP server at URL: ${mcpUrl}`);
             const transport = new SSEClientTransport(new URL(mcpUrl));
             const client = new Client(
                 { name: "cap-ai-client", version: "1.0.0" },
@@ -43,7 +44,7 @@ export default class AIAssistService extends cds.ApplicationService {
                 }));
 
                 const model = genAI.getGenerativeModel({
-                    model: "gemini-1.5-flash",
+                    model: "gemini-2.5-flash",
                     tools: [{ functionDeclarations: geminiTools }]
                 });
 
